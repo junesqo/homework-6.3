@@ -8,7 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import kg.junesqo.m6l3hw.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), Adapter.OnClick {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         const val KEY = "key"
@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity(), Adapter.OnClick {
     }
 
     private fun initView() {
-        adapter = Adapter(allImages())
-        adapter.setOnClick(this)
+        adapter = Adapter(allImages(), this::onClicked, this::onRemoved)
+//        adapter.setOnClick(this)
         binding.recycler.layoutManager = GridLayoutManager(this, 3)
         binding.recycler.adapter = adapter
     }
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), Adapter.OnClick {
         return imageList
     }
 
-    override fun onClicked(position: String) {
+    fun onClicked(position: String) {
         binding.cardView.visibility = View.VISIBLE
         binding.finishBtn.setOnClickListener {
             val intent = Intent(this, SecondActivity::class.java)
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), Adapter.OnClick {
         list.add(position)
     }
 
-    override fun onRemoved(position: String) {
+    fun onRemoved(position: String) {
         binding.cardView.visibility = View.GONE
         list.remove(position)
     }
